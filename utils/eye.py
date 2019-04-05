@@ -10,6 +10,8 @@ class Eye:
     def __init__(self, adb_path, temp_path):
         self.adb_path = adb_path
         self.temp_path = temp_path
+        if not os.path.exists(temp_path):
+            os.mkdir(temp_path)
 
     def _screen_shot(self):
         """capture phone screen and store the image as temp_path/temp.png"""
