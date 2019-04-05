@@ -1,5 +1,4 @@
 import subprocess
-import time
 
 
 class Finger:
@@ -25,5 +24,10 @@ class Finger:
 
     def home(self):
         cmd = "{} shell input keyevent KEYCODE_HOME"
+        cmd = cmd.format(self.adb_path)
+        subprocess.check_call(cmd)
+
+    def wake(self):
+        cmd = "{} shell input keyevent KEYCODE_WAKEUP"
         cmd = cmd.format(self.adb_path)
         subprocess.check_call(cmd)
