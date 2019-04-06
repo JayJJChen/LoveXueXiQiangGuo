@@ -1,3 +1,5 @@
+import os
+
 from utils.eye import Eye
 from utils.finger import Finger
 
@@ -5,9 +7,9 @@ from utils.finger import Finger
 class Navigator:
     """class to navigate the app, with Eye and Finger"""
 
-    def __init__(self, adb_path, temp_path):
+    def __init__(self, adb_path, temp_path, sleep_sec=2):
         self.eye = Eye(adb_path, temp_path)
-        self.finger = Finger(adb_path)
+        self.finger = Finger(adb_path, sleep_sec=sleep_sec)
 
     def bottom_tab(self, n):
         """
@@ -26,3 +28,10 @@ class Navigator:
         x = [108 + 108 * 2 * i for i in range(5)]
         y = 1850
         self.finger.tap(x[n], y)
+
+    def check_score(self):
+        """click the score from main page"""
+        path = os.path.join("images", "score.png")
+        self.bottom_tab(2)
+        coords = self.eye.find(path, multi_target=False)
+        self.finger.tap(*coords[0])
