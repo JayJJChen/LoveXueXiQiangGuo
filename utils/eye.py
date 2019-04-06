@@ -2,7 +2,7 @@ import os
 import subprocess
 
 import cv2
-import numpy as np
+from skimage.measure import regionprops, label
 
 
 class Eye:
@@ -43,19 +43,21 @@ class Eye:
         img = self.see()
         target = cv2.imread(target_path, cv2.IMREAD_GRAYSCALE)
         w_target, h_target = target.shape[::-1]  # shape of the target
-        res = cv2.matchTemplate(img, target, cv2.TM_CCOEFF_NORMED)
-        if res.max() < threshold:
+        heatmap = cv2.matchTemplate(img, target, cv2.TM_CCOEFF_NORMED)
+        heatmap_max = heatmap.max()
+        if heatmap_max < threshold:
             return None
+        if not multi_target:
+            threshold = heatmap_max
 
-        coords = []
-        max_val = 0
-        loc = np.where(res >= threshold)
-        for y, x in zip(*loc):
-            if multi_target:
-                coords.append([x + w_target // 2, y + h_target // 2])
-            else:
-                if res[y, x] > max_val:
-                    max_val = res[y, x]
-                    coords = [[x + w_target // 2, y + h_target // 2]]
+        heatmap_labeled = label(heatmap >= threshold)
+        heatmap_prop = regionprops(heatmap_labeled)
+
+        coords = list()
+        for prop in heatmap_prop:
+            y, x = prop.centroid
+            coords.append([int(x + w_target / 2), int(y + h_target / 2)])
+            if not multi_target:
+                return coords
 
         return coords
