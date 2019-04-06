@@ -44,4 +44,4 @@ class Finger:
         self._sleep()
 
     def _sleep(self):
-        time.sleep(self.sleep)
+        time.sleep(self._sleep_sec)
