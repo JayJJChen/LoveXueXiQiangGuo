@@ -23,7 +23,7 @@ class Ghost:
                 self.finger.back()
             num_attempts += 1
             if num_attempts >= max_try:  # failsafe
-                input("I'm lost! Please help me go to main page!")
+                input("I'm lost! Please help me go to main page! Hit Enter to continue")
 
     def to_score(self):
         """click the score from main page"""
