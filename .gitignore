@@ -110,3 +110,4 @@ test/
 test.py
 tmp/
 jupyter/
+platform-tools/
