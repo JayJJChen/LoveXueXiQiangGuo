@@ -26,22 +26,43 @@ class Finger:
         self._sleep()
 
     def back(self):
-        cmd = "{} shell input keyevent KEYCODE_BACK"
-        cmd = cmd.format(self._adb_path)
-        subprocess.check_call(cmd)
+        self._keycode("BACK")
         self._sleep()
 
     def home(self):
-        cmd = "{} shell input keyevent KEYCODE_HOME"
-        cmd = cmd.format(self._adb_path)
-        subprocess.check_call(cmd)
+        self._keycode("HOME")
         self._sleep()
 
     def wake(self):
-        cmd = "{} shell input keyevent KEYCODE_WAKEUP"
-        cmd = cmd.format(self._adb_path)
-        subprocess.check_call(cmd)
+        self._keycode("WAKEUP")
         self._sleep()
+
+    def enter(self):
+        self._keycode("ENTER")
+        self._sleep()
+
+    def input_letter(self, text):
+        """input English text only"""
+        self._input(text)
+        self._input("1")
+        self._sleep()
+
+    def input_number(self, number):
+        """input numbers only"""
+        self._input(str(number))
+        self._sleep()
+
+    def _input(self, text):
+        for s in text:
+            self._keycode(s.upper())
+            time.sleep(0.1)
+
+    def _keycode(self, x):
+        """enter keycodes, reference:
+        https://stackoverflow.com/questions/7789826/adb-shell-input-events"""
+        cmd = "{} shell input keyevent KEYCODE_{}"
+        cmd = cmd.format(self._adb_path, x)
+        subprocess.check_call(cmd)
 
     def _sleep(self):
         time.sleep(self._sleep_sec)
