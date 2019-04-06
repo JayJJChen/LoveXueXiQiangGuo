@@ -33,14 +33,15 @@ class Eye:
         img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
         return img
 
-    def find(self, target_path, multi_target=False, threshold=0.95):
+    def find(self, target_path, multi_target=False, threshold=0.95, img=None):
         """
         finds target center coord
 
         returns None if nothing found
         else returns [[x1, y1], [x2, y2], ...]
         """
-        img = self.see()
+        if img is None:
+            img = self.see()
         target = cv2.imread(target_path, cv2.IMREAD_GRAYSCALE)
         w_target, h_target = target.shape[::-1]  # shape of the target
         heatmap = cv2.matchTemplate(img, target, cv2.TM_CCOEFF_NORMED)
