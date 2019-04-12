@@ -1,4 +1,5 @@
 import os
+import time
 
 from utils.eye import Eye
 from utils.finger import Finger
@@ -41,15 +42,21 @@ class Ghost:
         self._goto("exit_exam")
         self.finger.back()
 
-    def scroll_up(self):
+    def swipe_up(self):
         self.finger.swipe(500, 1000, 500, 500)
 
-    def scroll_down(self):
+    def swipe_down(self):
         self.finger.swipe(500, 500, 500, 1000)
 
     def _goto(self, img_name):
         path = self._image_path(img_name)
         coords = self.eye.find(path, multi_target=False)
+        fail_count = 0
+        while coords is None:
+            time.sleep(2)
+            coords = self.eye.find(path, multi_target=False)
+            if (fail_count > 5) and (coords is None):
+                raise RuntimeError("I'm lost! Exiting!")
         self.finger.tap(*coords[0])
 
     def _bottom_tab(self, n):
