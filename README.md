@@ -7,12 +7,13 @@ Python萌新，发现大家都需要学习强国。众所周知，手机用的�
 
 项目处于开发初期，初步设想是使用adb命令控制安卓手机。本萌新也希望可以在开发过程中学习到Python面向对象编程、adb shell命令、OCR等等技能。
 
-目前功能：自动答题，没了。
+目前功能：自动答题(每日、每周)，没了。
 
 学习使我快乐！
 
 ### Features
 - auto exam for 6 times, getting 6 daily points
+- auto weekly exam, getting 4 points per day until you run out of weekly
 - more coming
 
 

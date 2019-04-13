@@ -7,19 +7,32 @@ class Bot(Ghost):
     def __init__(self, **kwargs):
         Ghost.__init__(self, **kwargs)
 
-    def take_exam(self):
-        self._to_exam()
+    def take_exam(self, weekly=False):
+        """
+        weekly: True to take weekly, else take daily
+        """
+        if weekly:
+            self._to_weekly_exam()
+        else:
+            self._to_daily_exam()
         time.sleep(3)
         for _ in range(5):
             self._answer()
         self._submit()
         self.finger.back()
 
-    def _to_exam(self):
-        """go to one exam"""
+    def _to_daily_exam(self):
+        """go to one daily exam"""
         self.to_main()
         self.to_exam_root()
         self.finger.tap(140, 1550)  # lazy coord
+
+    def _to_weekly_exam(self):
+        """find weekly exam"""
+        self.to_main()
+        self.to_exam_root()
+        self._goto("more")
+        self._find_weekly_exam()
 
     def _do_choice(self, c="A"):
         """c: str, which choice to choose"""

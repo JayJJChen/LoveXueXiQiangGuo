@@ -48,6 +48,20 @@ class Ghost:
     def swipe_down(self):
         self.finger.swipe(500, 500, 500, 1000)
 
+    def _find_weekly_exam(self):
+        """find available weekly exam in weekly exam page"""
+        path = self._image_path("start_exam")
+        coords = self.eye.find(path, multi_target=False)
+        fail_count = 0
+        while coords is None:
+            # swipe up if there's no "start_exam"
+            time.sleep(2)
+            self.swipe_up()
+            coords = self.eye.find(path, multi_target=False)
+            if (fail_count > 10) and (coords is None):
+                raise RuntimeError("I'm lost! Exiting!")
+        self.finger.tap(*coords[0])
+
     def _goto(self, img_name):
         path = self._image_path(img_name)
         coords = self.eye.find(path, multi_target=False)
